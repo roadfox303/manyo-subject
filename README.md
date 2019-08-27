@@ -3,30 +3,30 @@
 ## 1.テーブル定義
 
 ### Admins table
-|カラム名|データ型|NULL|UNIQUE|
+|カラム名|データ型|null|unique|
 |:--:|:--:|:--:|:--:|
 |**name**|string|false|
 |**email**|string|false|true|
 |**password_digest**|string|false|
 
 ### Users table
-|カラム名|データ型|NULL|UNIQUE|
+|カラム名|データ型|null|unique|
 |:--:|:--:|:--:|:--:|
 |**name**|string|false|
 |**email**|string|false|true|
 |**password_digest**|string|false|
 
 ### Tasks table
-|カラム名|データ型|NULL|DEFALT|KEY|
+|カラム名|データ型|null|defalt|foreign_key|
 |:--:|:--:|:--:|:--:|:--:|
 |**title**|string|false|新規タスク|
 |**comment**|text|
 |**priority**|integer|false|0|
 |**deadline**|datetime|
-|**user_id**|integer|||FK|
+|**user_id**|integer|||true|
 
 ### States table
-|カラム名|データ型|NULL|UNIQUE|
+|カラム名|データ型|null|unique|
 |:--:|:--:|:--:|:--:|
 |**progress**|string|false|true|
 
@@ -40,7 +40,7 @@
 |**state_id**|integer|
 
 ### Tags table
-|カラム名|データ型|NULL|UNIQUE|
+|カラム名|データ型|null|unique|
 |:--:|:--:|:--:|:--:|
 |**name**|string|false|true|
 
