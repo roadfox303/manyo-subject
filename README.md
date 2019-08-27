@@ -1,5 +1,5 @@
 # DiveIntoCode 課題[株式会社万葉様新入社員教育課題]
----
+
 ## 1.テーブル定義
 
 ### Admins table
@@ -52,5 +52,3 @@
 |:--:|:--:|:--:|:--:|
 |**task_id**|integer|false|FK|
 |**tag_id**|integer|false|FK|
-
----
