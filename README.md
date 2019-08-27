@@ -34,10 +34,10 @@
 
 中間テーブル - 1対多アソシエーション
 
-|カラム名|データ型|NULL|key|
-|:--:|:--:|:--:|:--:|
-|**task_id**|integer||FK|
-|**state_id**|integer||FK|
+|カラム名|データ型|
+|:--:|:--:|
+|**task_id**|integer|
+|**state_id**|integer|
 
 ### Tags table
 |カラム名|データ型|NULL|UNIQUE|
@@ -48,7 +48,7 @@
 
 中間テーブル - 多対多アソシエーション
 
-|カラム名|データ型|NULL|key|
-|:--:|:--:|:--:|:--:|
-|**task_id**|integer||FK|
-|**tag_id**|integer||FK|
+|カラム名|データ型|
+|:--:|:--:|
+|**task_id**|integer|
+|**tag_id**|integer|
