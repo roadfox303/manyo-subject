@@ -36,8 +36,8 @@
 
 |カラム名|データ型|NULL|key|
 |:--:|:--:|:--:|:--:|
-|**task_id**|integer|false|FK|
-|**state_id**|integer|false|FK|
+|**task_id**|integer||FK|
+|**state_id**|integer||FK|
 
 ### Tags table
 |カラム名|データ型|NULL|UNIQUE|
@@ -50,5 +50,5 @@
 
 |カラム名|データ型|NULL|key|
 |:--:|:--:|:--:|:--:|
-|**task_id**|integer|false|FK|
-|**tag_id**|integer|false|FK|
+|**task_id**|integer||FK|
+|**tag_id**|integer||FK|
