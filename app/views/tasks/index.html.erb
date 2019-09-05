@@ -3,7 +3,7 @@
 <%= flash[:failure] %>
 <dl>
 <% @tasks.each do |task| %>
-  <dt><%= link_to task.title, task_path(task.id)%></dt>
+  <dt><%= link_to task.title, task_path(task.id) %></dt>
 <% end %>
 </dl>
 <%= link_to "タスク作成", new_task_path %>

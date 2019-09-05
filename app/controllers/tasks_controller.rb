@@ -13,10 +13,8 @@ class TasksController < ApplicationController
   end
 
   def create
-    @task = Task.new(task_params)
+    Task.create(task_params)
     #下記は user_id をテスト指定（ユーザー機能と連携時にはuserインスタンスから取得）
-    @task.user_id = 1
-    @task.save
     flash[:success] = "タスクを登録しました"
     redirect_to tasks_path
   end
