@@ -1,4 +1,4 @@
-<h1>タスク一覧</h1>
+<h1><%= t('view.tasks.title_index') %></h1>
 <%= flash[:success] %>
 <%= flash[:failure] %>
 <dl>
@@ -6,4 +6,4 @@
   <dt><%= link_to task.title, task_path(task.id) %></dt>
 <% end %>
 </dl>
-<%= link_to "タスク作成", new_task_path %>
+<%= link_to t('view.tasks.link.create'), new_task_path %>
