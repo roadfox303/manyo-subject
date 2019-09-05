@@ -15,7 +15,7 @@ class TasksController < ApplicationController
   def create
     Task.create(task_params)
     #下記は user_id をテスト指定（ユーザー機能と連携時にはuserインスタンスから取得）
-    flash[:success] = "タスクを登録しました"
+    flash[:success] = t('flash.tasks.created')
     redirect_to tasks_path
   end
 
@@ -24,13 +24,13 @@ class TasksController < ApplicationController
 
   def update
     @task.update(task_params)
-    flash[:success] = "タスクを編集しました"
+    flash[:success] = t('flash.tasks.edited')
     redirect_to tasks_path
   end
 
   def destroy
     @task.destroy
-    flash[:success] = "タスクを削除しました"
+    flash[:success] = t('flash.tasks.deleted')
     redirect_to tasks_path
   end
 

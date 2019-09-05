@@ -1,14 +1,14 @@
-<h1>タスク詳細</h1>
+<h1><%= t('view.tasks.title_show') %></h1>
 <ul>
   <li>
-      <h3>タスク名</h3>
+      <h3><%= t('view.tasks.title') %></h3>
       <%= @task.title %>
   </li>
   <li>
-      <h3>タスク詳細</h3>
+      <h3><%= t('view.tasks.comment') %></h3>
       <%= @task.comment %>
   </li>
 </ul>
-<%= link_to "編集", edit_task_path(@task.id) %>
-<%= link_to "削除", task_path(@task.id), method: :delete %>
-<%= link_to "一覧に戻る", tasks_path %>
+<%= link_to t('view.tasks.link.edit'), edit_task_path(@task.id) %>
+<%= link_to t('view.tasks.link.delete'), task_path(@task.id), method: :delete %>
+<%= link_to t('view.tasks.link.index'), tasks_path %>

@@ -1,14 +1,14 @@
 <%= form_with(model: @task, local: true ) do |form| %>
 <ul>
   <li>
-      <h3>タスク名</h3>
+      <h3><%= t('view.tasks.title') %></h3>
       <%= form.text_field :title, {id: "form_title"} %>
   </li>
   <li>
-      <h3>タスク詳細</h3>
+      <h3><%= t('view.tasks.comment') %></h3>
       <%= form.text_area :comment, {id: "form_comment"} %>
   </li>
 </ul>
-  <%= form.submit "登録" %>
+  <%= form.submit t('view.tasks.link.upload') %>
 <% end %>
-<%= link_to "一覧に戻る", tasks_path %>
+<%= link_to t('view.tasks.link.index'), tasks_path %>
