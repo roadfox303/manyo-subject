@@ -2,7 +2,15 @@ class TasksController < ApplicationController
   before_action :set_id, only: [:edit, :destroy, :update, :show]
 
   def index
-    @tasks = Task.all.reverse
+    if params[:direction].present?
+      @sort_type = params[:sort_type]
+      @direction = params[:direction]
+      @tasks = Task.all.order("#{@sort_type} #{@direction}")
+    else
+      @sort_type = "id"
+      @direction = "asc"
+      @tasks = Task.all
+    end
   end
 
   def show
