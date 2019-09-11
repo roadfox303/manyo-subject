@@ -1,9 +1,30 @@
 <h1><%= t('view.tasks.title_index') %></h1>
 <%= flash[:success] %>
 <%= flash[:failure] %>
+<div>
+  <%= form_with(url: tasks_path(sort:true), local: true, method: :get) do |f| %>
+  <div id="sort_item">
+    <%= f.label :"ソート項目" %>
+    <%= f.select :sort_type, [["登録順", "id"],["作成日順", "created_at"],["優先度順", "priority"],["締め切り日順", "deadline"]], :selected => @sort_type, id:"sort_type" %>
+    <% if @direction == "asc" %>
+      <%= f.label :"昇順" %>
+      <%= f.radio_button :direction, "asc", id: "asc", checked: true %>
+      <%= f.label :"降順" %>
+      <%= f.radio_button :direction, "desc", id: "desc" %>
+    <% else %>
+      <%= f.label :"昇順" %>
+      <%= f.radio_button :direction, "asc", id: "asc" %>
+      <%= f.label :"降順" %>
+      <%= f.radio_button :direction, "desc", id: "desc", checked: true %>
+    <% end %>
+      <%= f.submit "ソート" %>
+  </div>
+  <% end %>
+</div>
 <dl>
 <% @tasks.each do |task| %>
-  <dt><%= link_to task.title, task_path(task.id) %></dt>
+  <dt class="task_item" id="task_<%= task.id %>"><%= task.created_at.strftime("%Y-%m-%d %H:%M") %></dt>
+  <dd><%= link_to task.title, task_path(task.id) %></dd>
 <% end %>
 </dl>
 <%= link_to t('view.tasks.link.create'), new_task_path %>
