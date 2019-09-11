@@ -46,8 +46,12 @@ RSpec.feature "タスク管理", type: :feature do
     task = Task.new(title: "", comment: "失敗")
     expect(task).not_to be_valid
   end
-  scenario "コメントが空でもバリデーション通る" do
+  scenario "コメントが空ならバリデーションを通らない" do
     task = Task.new(title: "コメントなし", comment: "")
+    expect(task).not_to be_valid
+  end
+  scenario "タイトル、コメントが記入されていたら成功" do
+    task = Task.new(title: "テスト", comment: "成功")
     expect(task).to be_valid
   end
 end
