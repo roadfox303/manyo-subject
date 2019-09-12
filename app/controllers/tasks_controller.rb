@@ -27,7 +27,7 @@ class TasksController < ApplicationController
       redirect_to tasks_path
     else
       flash[:failure] = t('flash.tasks.failed_create')
-
+      render :new
     end
   end
 
