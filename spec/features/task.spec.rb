@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.feature "タスク管理", type: :feature do
   background do
-    # @user = FactoryBot.create(:user)
+    @user = FactoryBot.create(:user)
     FactoryBot.create(:task)
     FactoryBot.create(:second_task)
     visit tasks_path
@@ -41,5 +41,17 @@ RSpec.feature "タスク管理", type: :feature do
     click_button "ソート"
     tasks = all('.task_item')
     expect(Date.strptime(tasks[0].text)).to be > Date.strptime(tasks[1].text)
+  end
+  scenario "タイトルが空ならバリデーションを通らない" do
+    task = Task.new(title: "", comment: "失敗")
+    expect(task).not_to be_valid
+  end
+  scenario "コメントが空ならバリデーションを通らない" do
+    task = Task.new(title: "コメントなし", comment: "")
+    expect(task).not_to be_valid
+  end
+  scenario "タイトル、コメントが記入されていたら成功" do
+    task = Task.new(title: "テスト", comment: "成功")
+    expect(task).to be_valid
   end
 end

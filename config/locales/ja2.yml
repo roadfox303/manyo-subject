@@ -1,0 +1,67 @@
+ja:
+  activerecord:
+    models:
+      admin: 管理者
+      user: ユーザー
+      task: タスク
+      label: ラベル
+      tag: タグ
+      status: 状況
+      state: 状態
+    attributes:
+      user:
+        name: ユーザーネーム
+        email: メールアドレス
+        password: パスワード
+        password_confirmation: 確認用パスワード
+      admin:
+        name: 管理者ネーム
+        email: メールアドレス
+        password: パスワード
+        password_confirmation: 確認用パスワード
+      task:
+        title: タイトル
+        comment: 詳細
+        priority: 優先度
+        deadline: 期限
+        user_id: 所持者
+        created_at: 作成日時
+        updated_at: 更新日時
+      status:
+        task_id: タスクID
+        state_id: ステートID
+      state:
+        progress: 進行度
+      label:
+        task_id: タスクID
+        tag_id: タグID
+      tag:
+        name: タグネーム
+    errors:
+      messages:
+        record_invalid: 'バリデーションに失敗しました: %{errors}'
+        restrict_dependent_destroy:
+          has_one: "%{record}が存在しているので削除できません"
+          has_many: "%{record}が存在しているので削除できません"
+  flash:
+    tasks:
+      created: タスクを登録しました
+      edited: タスクを編集しました
+      deleted: タスクを削除しました
+      failed_create: タスクを登録できませんでした
+      failed_edit: タスクを編集できませんでした
+      failed_delete: タスクを削除できませんでした
+  view:
+    tasks:
+      title_index: タスク一覧
+      title_new: タスク登録
+      title_show: タスク詳細
+      title_edit: タスク編集
+      title: タイトル
+      comment: タスク内容
+      link:
+        create: 新規作成
+        edit: 編集
+        delete: 削除
+        upload: 登録
+        index: 一覧に戻る

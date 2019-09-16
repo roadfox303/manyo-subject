@@ -20,7 +20,7 @@
 |カラム名|データ型|null|defalt|foreign_key|
 |:--:|:--:|:--:|:--:|:--:|
 |**title**|string|false|新規タスク|
-|**comment**|text|
+|**comment**|text|false||
 |**priority**|integer|false|0|
 |**deadline**|datetime|
 |**user_id**|integer|||true|

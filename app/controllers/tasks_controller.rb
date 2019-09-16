@@ -21,10 +21,14 @@ class TasksController < ApplicationController
   end
 
   def create
-    Task.create(task_params)
-    #下記は user_id をテスト指定（ユーザー機能と連携時にはuserインスタンスから取得）
-    flash[:success] = t('flash.tasks.created')
-    redirect_to tasks_path
+      @task = Task.create(task_params)
+    if @task.save
+      flash[:success] = t('flash.tasks.created')
+      redirect_to tasks_path
+    else
+      flash[:failure] = t('flash.tasks.failed_create')
+      render :new
+    end
   end
 
   def edit
@@ -32,8 +36,13 @@ class TasksController < ApplicationController
 
   def update
     @task.update(task_params)
-    flash[:success] = t('flash.tasks.edited')
-    redirect_to tasks_path
+    if @task.save
+      flash[:success] = t('flash.tasks.edited')
+      redirect_to tasks_path
+    else
+      flash[:failure] = t('flash.tasks.failed_edit')
+      render :new
+    end
   end
 
   def destroy
