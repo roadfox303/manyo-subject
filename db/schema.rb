@@ -53,7 +53,7 @@ ActiveRecord::Schema.define(version: 2019_09_11_042337) do
   end
 
   create_table "tasks", force: :cascade do |t|
-    t.string "title", default: "新規タスク", null: false
+    t.string "title", null: false
     t.text "comment", null: false
     t.integer "priority", default: 0, null: false
     t.datetime "deadline"
