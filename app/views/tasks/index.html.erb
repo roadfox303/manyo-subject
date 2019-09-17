@@ -23,7 +23,11 @@
 </div>
 <dl>
 <% @tasks.each do |task| %>
-  <dt class="task_item" id="task_<%= task.id %>"><%= task.created_at.strftime("%Y-%m-%d %H:%M") %></dt>
+  <dt class="task_item" id="task_<%= task.id %>">作成:<span class="created_at"><%= task.created_at.strftime("%Y-%m-%d %H:%M") %></span>
+    <% if task.deadline.present? %>
+    期限:<span class="deadline"><%= task.deadline.strftime("%Y-%m-%d %H:%M") %></span>
+    <% end %>
+  </dt>
   <dd><%= link_to task.title, task_path(task.id) %></dd>
 <% end %>
 </dl>

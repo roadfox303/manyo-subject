@@ -15,6 +15,10 @@
       <%= form.text_field :title, {id: "form_title"} %>
   </li>
   <li>
+      <h3><%= t('view.tasks.deadline') %></h3>
+      <%= form.text_field :deadline, {id: "form_deadline"} %>
+  </li>
+  <li>
       <h3><%= t('view.tasks.comment') %></h3>
       <%= form.text_area :comment, {id: "form_comment"} %>
   </li>
@@ -22,3 +26,8 @@
   <%= form.submit t('view.tasks.link.upload') %>
 <% end %>
 <%= link_to t('view.tasks.link.index'), tasks_path %>
+<script>
+  $( function(){
+    $( "#form_deadline" ).datetimepicker();
+  });
+</script>
