@@ -20,8 +20,7 @@ RSpec.feature "タスク管理", type: :feature do
     find("option[value='#{item}']").select_option
     choose('desc')
     click_button "ソート"
-    tasks = all('.created_at')
-    expect(Date.strptime(tasks[0].text)).to be > Date.strptime(tasks[1].text)
+    tasks = all(".#{item}")
   end
 
   scenario "タスク作成" do
@@ -45,7 +44,8 @@ RSpec.feature "タスク管理", type: :feature do
   end
 
   scenario "タスクが作成日時の降順に並んでいたら成功" do
-    sort_test("created_at")
+    tasks = sort_test("created_at")
+    expect(Date.strptime(tasks[0].text)).to be > Date.strptime(tasks[1].text)
   end
   scenario "タイトルが空ならバリデーションを通らない" do
     task = Task.new(title: "",deadline:"2019/09/20 01:30", comment: "失敗")
@@ -60,6 +60,7 @@ RSpec.feature "タスク管理", type: :feature do
     expect(task).to be_valid
   end
   scenario "タスクが終了期日の降順に並んでいたら成功" do
-    sort_test("deadline")
+    tasks = sort_test("deadline")
+    expect(Date.strptime(tasks[0].text)).to be > Date.strptime(tasks[1].text)
   end
 end
