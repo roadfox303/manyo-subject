@@ -22,6 +22,15 @@
       <h3><%= t('view.tasks.comment') %></h3>
       <%= form.text_area :comment, {id: "form_comment"} %>
   </li>
+  <%= form.fields_for :statuses  do |i| %>
+  <li>
+      <h3><%= t('view.tasks.state') %></h3>
+      <% if @state.present? %>
+      <%= i.hidden_field :statuses, :value => @state.id %>
+      <% end %>
+      <%= i.select :state_id, @state_list %>
+  </li>
+  <% end %>
 </ul>
   <%= form.submit t('view.tasks.link.upload') %>
 <% end %>

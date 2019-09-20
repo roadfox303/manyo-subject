@@ -1,16 +1,11 @@
 FactoryBot.define do
-
-  factory :task do
-    title { 'Factoryで作ったデフォルトのタイトル１' }
-    comment { 'Factoryで作ったデフォルトのコンテント１' }
-    created_at { Time.current + 2.days }
-    deadline { Time.current + 6.days }
-  end
-
-  factory :second_task, class: Task do
-    title { 'Factoryで作ったデフォルトのタイトル２' }
-    comment { 'Factoryで作ったデフォルトのコンテント２' }
-    created_at { Time.current + 1.days }
-    deadline { Time.current + 10.days }
+  factory :task, class: Task do
+    title { title }
+    comment { comment }
+    created_at { created_at }
+    deadline { deadline }
+    after(:build) do |task|
+      task.statuses << build(:statuses, task_id: :@@last, state_id: State.first.id)
+    end
   end
 end

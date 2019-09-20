@@ -2,7 +2,27 @@
 <%= flash[:success] %>
 <%= flash[:failure] %>
 <div>
-  <%= form_with(url: tasks_path(sort:true), local: true, method: :get) do |f| %>
+  <%= form_with(url: tasks_path, local: true, method: :get) do |f| %>
+  <%= f.fields_for :search  do |i| %>
+  <div id="search_item">
+    <%= i.check_box :flag, {:checked => @search_btn } , true, false %><%= i.label :"絞り込み" %>
+    <% if @search_mode == "and" %>
+      <%= i.label :"and" %>
+      <%= i.radio_button :search_mode, "and", id: "and", checked: true %>
+      <%= i.label :"or" %>
+      <%= i.radio_button :search_mode, "or", id: "or" %>
+    <% else %>
+      <%= i.label :"and" %>
+      <%= i.radio_button :search_mode, "and", id: "and" %>
+      <%= i.label :"or" %>
+      <%= i.radio_button :search_mode, "or", id: "or", checked: true %>
+    <% end %>
+    <%= i.select :progress_type, @state_list, :selected => @progress_type, id:"search_progress" %>
+    <%= i.fields_for :item  do |item| %>
+      <%= item.select :priority, [["優先度", nil],["1", 1],["2", 2],["3", 3],["4", 4],["5", 5]], :selected => @sort_type, id:"search_priority" %>
+    <% end %>
+  </div>
+  <% end %>
   <div id="sort_item">
     <%= f.label :"ソート項目" %>
     <%= f.select :sort_type, [["登録順", "id"],["作成日順", "created_at"],["優先度順", "priority"],["締め切り日順", "deadline"]], :selected => @sort_type, id:"sort_type" %>
@@ -17,18 +37,22 @@
       <%= f.label :"降順" %>
       <%= f.radio_button :direction, "desc", id: "desc", checked: true %>
     <% end %>
-      <%= f.submit "ソート" %>
   </div>
+  <%= f.submit t('view.tasks.link.search') %>
   <% end %>
 </div>
 <dl>
-<% @tasks.each do |task| %>
-  <dt class="task_item" id="task_<%= task.id %>">作成:<span class="created_at"><%= task.created_at.strftime("%Y-%m-%d %H:%M") %></span>
-    <% if task.deadline.present? %>
-    期限:<span class="deadline"><%= task.deadline.strftime("%Y-%m-%d %H:%M") %></span>
-    <% end %>
-  </dt>
-  <dd><%= link_to task.title, task_path(task.id) %></dd>
+<% if @tasks.present? %>
+  <% @tasks.each do |task| %>
+    <dt class="task_item" id="task_<%= task.id %>">
+      進行：<span class="progress"><%= task.status_state[0].progress %></span>
+      作成：<span class="created_at"><%= task.created_at.strftime("%Y-%m-%d %H:%M") %></span>
+      <% if task.deadline.present? %>
+      　期限：<span class="deadline"><%= task.deadline.strftime("%Y-%m-%d %H:%M") %></span>
+      <% end %>
+    </dt>
+    <dd><%= link_to task.title, task_path(task.id) %></dd>
+  <% end %>
 <% end %>
 </dl>
-<%= link_to t('view.tasks.link.create'), new_task_path %>
+<%= link_to t('view.tasks.link.create'), new_task_path, id: "new_task" %>

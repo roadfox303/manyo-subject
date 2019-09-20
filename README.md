@@ -34,52 +34,52 @@ $ heroku open
 ## 2.テーブル定義
 
 ### Admins table
-|カラム名|データ型|null|unique|
+|カラム名|データ型|null|index|
 |:--:|:--:|:--:|:--:|
 |**name**|string|false|
-|**email**|string|false|true|
+|**email**|string|false|unique|
 |**password_digest**|string|false|
 
 ### Users table
-|カラム名|データ型|null|unique|
+|カラム名|データ型|null|index|
 |:--:|:--:|:--:|:--:|
-|**name**|string|false|
-|**email**|string|false|true|
+|**name**|string|false|addition|
+|**email**|string|false|unique|
 |**password_digest**|string|false|
 
 ### Tasks table
-|カラム名|データ型|null|defalt|foreign_key|
-|:--:|:--:|:--:|:--:|:--:|
-|**title**|string|false|新規タスク|
-|**comment**|text|false||
-|**priority**|integer|false|0|
-|**deadline**|datetime|
-|**user_id**|integer|||true|
+|カラム名|データ型|null|defalt|index|foreign_key|
+|:--:|:--:|:--:|:--:|:--:|:--:|
+|**title**|string|false|新規タスク|addition|
+|**comment**|text|false|||
+|**priority**|integer|false|0|addition||
+|**deadline**|datetime|||addition|
+|**user_id**|integer||||true|
 
 ### States table
-|カラム名|データ型|null|unique|
+|カラム名|データ型|null|index|
 |:--:|:--:|:--:|:--:|
-|**progress**|string|false|true|
+|**progress**|string|false|unique|
 
 ### Statuses table
 
 中間テーブル - 1対多
 
-|カラム名|データ型|
-|:--:|:--:|
+|カラム名|データ型|index|
+|:--:|:--:|:--:|
 |**task_id**|integer|
-|**state_id**|integer|
+|**state_id**|integer|addition|
 
 ### Tags table
-|カラム名|データ型|null|unique|
+|カラム名|データ型|null|index|
 |:--:|:--:|:--:|:--:|
-|**name**|string|false|true|
+|**name**|string|false|unique|
 
 ### Labels table
 
 中間テーブル - 多対多
 
-|カラム名|データ型|
-|:--:|:--:|
-|**task_id**|integer|
-|**tag_id**|integer|
+|カラム名|データ型|index|
+|:--:|:--:|:--:|
+|**task_id**|integer|addition|
+|**tag_id**|integer|addition|
