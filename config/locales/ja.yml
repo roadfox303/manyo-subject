@@ -61,12 +61,14 @@ ja:
       title: タイトル
       comment: タスク内容
       deadline: 終了期日
+      state: ステータス
       link:
         create: 新規作成
         edit: 編集
         delete: 削除
         upload: 登録
         index: 一覧に戻る
+        search: 検索
   date:
     abbr_day_names:
     - 日
