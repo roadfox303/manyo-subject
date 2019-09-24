@@ -2,6 +2,7 @@ class TasksController < ApplicationController
   before_action :set_id, only: [:edit, :destroy, :update, :show]
 
   def index
+    mass = 10
     @state_list = [["進行状況",nil]]
     State.all.each do |s|
       @state_list << [s.progress,s.id]
@@ -54,15 +55,16 @@ class TasksController < ApplicationController
         else
           array_result = array_augment.flatten.uniq
         end
-        @tasks = Task.result_task(array_result,@sort_type,@direction)
+        @mass_tasks = Task.result_task(array_result,@sort_type,@direction)
       else
-        @tasks = Task.all.sort_task(@sort_type,@direction)
+        @mass_tasks = Task.all.sort_task(@sort_type,@direction)
       end
     else
       @sort_type = "id"
       @direction = "asc"
-      @tasks = Task.all
+      @mass_tasks = Task.all
     end
+    @tasks = @mass_tasks.page(params[:page]).per(mass)
   end
 
   def show
