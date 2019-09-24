@@ -62,6 +62,7 @@ ja:
       comment: タスク内容
       deadline: 終了期日
       state: ステータス
+      priority: 優先度
       link:
         create: 新規作成
         edit: 編集

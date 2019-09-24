@@ -6,11 +6,13 @@ class TasksController < ApplicationController
     State.all.each do |s|
       @state_list << [s.progress,s.id]
     end
+    set_priority_array
     if params[:direction].present?
       @sort_type = params[:sort_type]
       @direction = params[:direction]
       if params[:search][:flag]
         @search_btn = true
+        @search_mode = params[:search][:search_mode]
         array_augment = []
         array_result = []
         if params[:search][:progress_type].present?
@@ -22,14 +24,19 @@ class TasksController < ApplicationController
           array_augment << array_progress
           @progress_type = progress_id
         end
-        #progress_type以外の検索項目実装（あとで有効にする）
-        #
-        # params[:search][:item].each do |item|
-        #   binding.pry
-        #   Task.where(item[0]: item[1]).each do |task|
-        #     array_progress << task.id
-        #   end
-        # end
+        params[:search][:item].each do |key,value|
+          if value.present?
+            array_item = []
+            Task.where("#{key}": value.to_i).each do |task|
+              array_item << task.id
+            end
+            array_augment << array_item
+          end
+          case key
+          when "priority" then
+            @priority_type = value
+          end
+        end
         if params[:search][:search_mode] == "and"
           case array_augment.size
           when 0 then
@@ -51,7 +58,6 @@ class TasksController < ApplicationController
       else
         @tasks = Task.all.sort_task(@sort_type,@direction)
       end
-
     else
       @sort_type = "id"
       @direction = "asc"
@@ -60,7 +66,7 @@ class TasksController < ApplicationController
   end
 
   def show
-
+    set_priority_array
   end
 
   def new
@@ -110,13 +116,21 @@ class TasksController < ApplicationController
 
   private
   def task_params
-    params.require(:task).permit(:id, :title, :comment, :deadline, statuses_attributes:[:task_id, :state_id])
+    params.require(:task).permit(:id, :title, :comment, :deadline, :priority, statuses_attributes:[:task_id, :state_id])
   end
   def update_task_params
-    params.require(:task).permit(:id, :title, :comment, :deadline, statuses_attributes:[:id, :task_id, :state_id])
+
+    params.require(:task).permit(:id, :title, :comment, :deadline, :priority, statuses_attributes:[:id, :task_id, :state_id])
   end
 
   def set_id
     @task = Task.find(params[:id])
+  end
+
+  def set_priority_array
+    @prioritys = []
+    Task.priority_ids.each do |key,value|
+      @prioritys << key[0]
+    end
   end
 end

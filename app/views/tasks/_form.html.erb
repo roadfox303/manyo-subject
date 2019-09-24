@@ -22,6 +22,10 @@
       <h3><%= t('view.tasks.comment') %></h3>
       <%= form.text_area :comment, {id: "form_comment"} %>
   </li>
+  <li>
+      <h3><%= t('view.tasks.priority') %></h3>
+      <%= form.select :priority, Task.priority_ids.keys.to_a, {} %>
+  </li>
   <%= form.fields_for :statuses  do |i| %>
   <li>
       <h3><%= t('view.tasks.state') %></h3>

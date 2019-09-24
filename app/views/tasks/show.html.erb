@@ -13,6 +13,10 @@
       <%= @task.status_state[0].progress %>
   </li>
   <li>
+      <h3><%= t('view.tasks.priority') %></h3>
+      <%= @prioritys[@task.priority] %>
+  </li>
+  <li>
       <h3><%= t('view.tasks.comment') %></h3>
       <%= @task.comment %>
   </li>
