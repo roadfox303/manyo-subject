@@ -37,14 +37,16 @@ RSpec.feature "タスク管理", type: :feature do
     end
   end
 
-  def creatre_task(tasks)
+  def create_task(tasks)
     progress = ["未着手","着手中","完了"]
+    priority = ["低","中","高"]
+    visit tasks_path
     tasks.times{|num|
-      visit tasks_path
       click_link "新規作成"
       fill_in "form_title", with: "テストタイトル#{num}"
       fill_in "form_deadline", with: "2019/09/#{num} 014:30"
       fill_in "form_comment", with: "テストコメント#{num}"
+      select priority[rand(0..2)], from: "task[priority]"
       select progress[rand(0..2)], from: "task[statuses_attributes][0][state_id]"
       click_button "登録"
       visit tasks_path
@@ -56,13 +58,13 @@ RSpec.feature "タスク管理", type: :feature do
   end
 
   scenario "タスク作成" do
-    creatre_task(5)
+    create_task(5)
     expect(page).to have_link("テストタイトル")
     record_id
   end
 
   scenario "タスク削除" do
-    creatre_task(5)
+    create_task(5)
     click_link "テストタイトル2"
     click_link "削除"
     record_id
@@ -70,7 +72,7 @@ RSpec.feature "タスク管理", type: :feature do
   end
 
   scenario "タスク編集" do
-    creatre_task(5)
+    create_task(5)
     click_link "テストタイトル3"
     click_link "編集"
     fill_in "form_title", with: "テストタイトルedit"
@@ -82,48 +84,58 @@ RSpec.feature "タスク管理", type: :feature do
   end
 
   scenario "タスクが作成日時の降順に並んでいる" do
-    creatre_task(5)
+    create_task(5)
     FactoryBot.create(:task, title: "99年", comment: "ああああ", created_at: "2019/09/24 01:30", deadline: "2099/09/28 01:30")
     record_id
     tasks = sort_test("created_at")
-    expect(Date.strptime(tasks[0].text)).to be > Date.strptime(tasks[1].text)
+    save_and_open_page
+    expect(Date.strptime(tasks[0].text)).to be > Date.strptime(tasks.last.text)
   end
 
   scenario "タイトルが空ならバリデーションを通らない" do
-    creatre_task(5)
+    create_task(5)
     task = Task.new(title: "",deadline:"2019/09/20 01:30", comment: "失敗")
     record_id
     expect(task).not_to be_valid
   end
 
   scenario "コメントが空ならバリデーションを通らない" do
-    creatre_task(5)
+    create_task(5)
     task = Task.new(title: "コメントなし",deadline:"2019/09/26 01:30", comment: "")
     record_id
     expect(task).not_to be_valid
   end
 
   scenario "タイトル、コメントが記入されている" do
-    creatre_task(5)
+    create_task(5)
     task = Task.new(title: "テスト",deadline:"2019/09/28 01:30", comment: "成功")
     record_id
     expect(task).to be_valid
   end
 
   scenario "タスクが終了期日の降順に並んでいる" do
-    creatre_task(5)
+    create_task(5)
     record_id
     tasks = sort_test("deadline")
     expect(Date.strptime(tasks[0].text)).to be > Date.strptime(tasks[1].text)
   end
 
   scenario "タスクをステータス(進行状況)で絞り込み" do
-    creatre_task(5)
+    create_task(5)
     record_id
     set_form(type:"check", item:"_search_flag")
     set_form(type:"select", item:"_search_progress_type", text: "完了")
     click_button "検索"
     expect(all('.task_item').size).to be < 6
+  end
+
+  scenario "タスクを優先度(降順)でソート" do
+    create_task(5)
+    FactoryBot.create(:task, title: "99年", comment: "ああああ", priority: 3, created_at: "2019/09/24 01:30", deadline: "2020/09/28 01:30")
+    record_id
+    tasks = sort_test("priority")
+    expect(tasks.first.text).to be == "高"
+    expect(tasks.last.text).to be == "---"
   end
 
 end

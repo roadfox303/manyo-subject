@@ -19,7 +19,7 @@
     <% end %>
     <%= i.select :progress_type, @state_list, :selected => @progress_type, id:"search_progress" %>
     <%= i.fields_for :item  do |item| %>
-      <%= item.select :priority, [["優先度", nil],["1", 1],["2", 2],["3", 3],["4", 4],["5", 5]], :selected => @sort_type, id:"search_priority" %>
+      <%= item.select :priority, [["優先度", nil],["低", 1],["中", 2],["高", 3]], :selected => @priority_type, id:"search_priority" %>
     <% end %>
   </div>
   <% end %>
@@ -45,6 +45,7 @@
 <% if @tasks.present? %>
   <% @tasks.each do |task| %>
     <dt class="task_item" id="task_<%= task.id %>">
+      優先度：<span class="priority"><%= @prioritys[task.priority] %></span>
       進行：<span class="progress"><%= task.status_state[0].progress %></span>
       作成：<span class="created_at"><%= task.created_at.strftime("%Y-%m-%d %H:%M") %></span>
       <% if task.deadline.present? %>
