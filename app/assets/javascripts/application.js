@@ -14,6 +14,7 @@
 //= require activestorage
 //= require turbolinks
 //= require jquery/dist/jquery.js
+//= require bootstrap/dist/js/bootstrap.min
 //= require ./jquery-ui.min.js
 //= require ./jquery-ui-timepicker-addon.min.js
 //= require ./datepicker-ja.js
