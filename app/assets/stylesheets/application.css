@@ -10,6 +10,127 @@
  * files in this directory. Styles in this file should be added after the last require_* statement.
  * It is generally better to create a new file per style scope.
  *
+*= require bootstrap/dist/css/bootstrap.min
  *= require_tree .
  *= require_self
  */
+ body{
+  background:#eeeeee;
+ }
+ul{
+  padding: 0;
+  margin: 0;
+}
+#index_container {
+  background: #ffffff;
+  overflow: hidden;
+}
+#control_box {
+  width: 100%;
+  background: #cccccc;
+  padding: 1rem;
+  margin: 0 0 2rem;
+}
+#control_box form {
+}
+#search_item{
+  list-style: none;
+  display: table;
+  width:auto;
+  margin: 0 auto;
+  padding-left: 0;
+}
+#search_item li{
+  display: table-cell;
+  width: auto;
+}
+.send{
+  float: right;
+}
+#list ul{
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+#list li{
+  display: block;
+  padding: 1rem;
+  border-bottom: 1px dotted #999999;
+  box-sizing: border-box;
+}
+.task_item .progress{
+  background-color:transparent!important;
+  box-shadow: none;
+  -webkit-box-shadow:none;
+}
+.task_item {
+  width:100%;
+  float: none;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+.task_item p{
+  margin: 0;
+  padding: 5px;
+  display: block;
+  float: left;
+  text-align: center;
+  margin-right: 1rem;
+  box-sizing: border-box;
+  background: #ffffff;
+  margin-bottom: 5px;
+}
+.task_item p:nth-child(1){
+  width: 10rem;
+}
+.task_item p:nth-child(2){
+  width: 11rem;
+}
+.task_item p:nth-child(3),.task_item p:nth-child(4){
+  width: 18rem;
+  text-align: left;
+  padding: 5px 1rem;
+}
+.title{
+  font-size:1.6rem;
+}
+#new_task {
+  display: block;
+  padding: 10px;
+  margin: 0 auto;
+}
+
+#view_task, #form_task {
+  list-style: none;
+  padding: 2rem;
+  font-size: 1.6rem;
+  display: block;
+  background: #ffffff;
+  margin-bottom: 2rem;
+}
+#form_task {
+
+}
+#view_task li, #form_task li{
+  padding: 2rem;
+  border-bottom: 1px dotted #dddddd;
+}
+#view_task li:last-child, #form_task li:last-child{
+  border-bottom: none;
+}
+#view_task h3, #view_task h3{
+  font-size: 2rem;
+  margin: 0 0 1rem;
+  color: #aaaaaa;
+  font-weight: bold;
+}
+#form_task li{
+  padding: 1rem;
+  border-bottom: 1px dotted #dddddd;
+}
+#form_task h3{
+  font-size: 1.6rem;
+  margin: 0 0 1rem;
+  color: #000;
+  font-weight: bold;
+}
