@@ -4,10 +4,18 @@ RSpec.feature "タスク管理", type: :feature do
   class_variable_set(:@@last, 1)
   background do
     @user = FactoryBot.create(:user)
+    log_in(@user)
     FactoryBot.create(:state)
     FactoryBot.create(:state_2)
     FactoryBot.create(:state_3)
     FactoryBot.create(:task, title: "アソシエーション作成用", comment: "テストタスク", created_at: "#{Time.current - 2.days}", deadline: "#{Time.current + 6.days}")
+  end
+
+  def log_in(user)
+    visit new_session_path
+    fill_in "session_email", with: user.email
+    fill_in "session_password", with: user.password
+    click_button "Log in"
   end
 
   def sort_test(item)
@@ -85,10 +93,9 @@ RSpec.feature "タスク管理", type: :feature do
 
   scenario "タスクが作成日時の降順に並んでいる" do
     create_task(5)
-    FactoryBot.create(:task, title: "99年", comment: "ああああ", created_at: "2019/09/24 01:30", deadline: "2099/09/28 01:30")
+    FactoryBot.create(:task, title: "99年", comment: "ああああ", user_id: @user.id ,created_at: "2019/11/24 01:30", deadline: "2099/09/28 01:30")
     record_id
     tasks = sort_test("created_at")
-    save_and_open_page
     expect(Date.strptime(tasks[0].text)).to be > Date.strptime(tasks.last.text)
   end
 
@@ -131,11 +138,30 @@ RSpec.feature "タスク管理", type: :feature do
 
   scenario "タスクを優先度(降順)でソート" do
     create_task(5)
-    FactoryBot.create(:task, title: "99年", comment: "ああああ", priority: 3, created_at: "2019/09/24 01:30", deadline: "2020/09/28 01:30")
+    FactoryBot.create(:task, title: "あとでいいよ", comment: "ああああ", priority: 0, user_id: @user.id, created_at: "2019/09/24 01:30", deadline: "2020/09/28 01:30")
+    FactoryBot.create(:task, title: "最優先", comment: "ええええ", priority: 3, user_id: @user.id, created_at: "2019/09/24 01:30", deadline: "2020/09/28 01:30")
     record_id
     tasks = sort_test("priority")
     expect(tasks.first.text).to be == "高"
     expect(tasks.last.text).to be == "---"
+  end
+
+  scenario "ログインしていないとセッション画面にリダイレクトされる" do
+    visit tasks_path
+    click_link "Logout"
+    expect(all('.task_item').size).to be 0
+  end
+
+  scenario "他人のタスクは見れない" do
+    FactoryBot.create(:task, title: "ユーザーAのタスク", comment: "ええええ", priority: 3, user_id: @user.id, created_at: "2019/09/24 01:30", deadline: "2020/09/28 01:30")
+    visit tasks_path
+    click_link "Logout"
+    @user2 = FactoryBot.create(:user)
+    FactoryBot.create(:task, title: "ユーザーBのタスク", comment: "ええええ", priority: 3, user_id: @user2.id, created_at: "2019/09/24 01:30", deadline: "2020/09/28 01:30")
+    log_in(@user2)
+    visit tasks_path
+    record_id
+    expect(all('.task_item').size).to be 1
   end
 
 end

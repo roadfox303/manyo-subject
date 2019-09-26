@@ -1,6 +1,5 @@
 class StatusesController < ApplicationController
   def create
-    binding.pry
     # task = Task.find(params[:task_id])
     # task.statuses.create(state_id: params[:state_id].to_i)
     # redirect_to tasks_path(anchor: "task_#{params[:task_id]}")

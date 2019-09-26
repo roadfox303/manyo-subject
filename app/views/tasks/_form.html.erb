@@ -27,6 +27,7 @@
       <%= form.select :priority, Task.priority_ids.keys.to_a, {} %>
   </li>
   <%= form.fields_for :statuses  do |i| %>
+  <%= form.hidden_field :user_id, :value => current_user.id %>
   <li>
       <h3><%= t('view.tasks.state') %></h3>
       <% if @state.present? %>
