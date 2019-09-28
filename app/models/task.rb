@@ -16,7 +16,7 @@ class Task < ApplicationRecord
   # activeとsortedを合わせたもの
   # scope :recent, -> { search.sort }
   scope :result_task, ->(array_result, type, direction) { where(id: array_result).order("#{type} #{direction}") }
-  scope :sort_task, ->(type,direction) { order("#{type} #{direction}") }
-  enum priority_id: [['---',""], ['低', 1], ['中', 2],['高', 3]]
+  scope :sort_task, ->(type, direction) { order("#{type} #{direction}") }
+  enum priority_id: [['---',0], ['低', 1], ['中', 2],['高', 3]]
 
 end

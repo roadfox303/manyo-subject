@@ -5,4 +5,6 @@ Rails.application.routes.draw do
       get :sort
     end
   end
+  resources :sessions, only: [:new, :create, :destroy]
+  resources :users, only: [:new, :create, :show]
 end

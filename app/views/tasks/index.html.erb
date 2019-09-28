@@ -68,5 +68,7 @@
     </ul>
   </div>
   <%= link_to t('view.tasks.link.create'), new_task_path, id: "new_task" %>
-  <%= paginate @tasks -%>
+  <% unless @tasks.empty? %>
+    <%= paginate @tasks -%>
+  <% end %>
 </div>

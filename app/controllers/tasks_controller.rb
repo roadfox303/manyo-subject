@@ -1,5 +1,8 @@
 class TasksController < ApplicationController
   before_action :set_id, only: [:edit, :destroy, :update, :show]
+  before_action :login_check
+  before_action :user_check, only:[:show, :edit, :update]
+
 
   def index
     mass = 10
@@ -19,7 +22,7 @@ class TasksController < ApplicationController
         if params[:search][:progress_type].present?
           array_progress = []
           progress_id = params[:search][:progress_type]
-          State.search_progress(progress_id).each do |task|
+          State.search_progress(progress_id, current_user.id).each do |task|
             array_progress << task.id
           end
           array_augment << array_progress
@@ -28,7 +31,7 @@ class TasksController < ApplicationController
         params[:search][:item].each do |key,value|
           if value.present?
             array_item = []
-            Task.where("#{key}": value.to_i).each do |task|
+            Task.where(user_id: current_user.id ,"#{key}": value.to_i).each do |task|
               array_item << task.id
             end
             array_augment << array_item
@@ -55,16 +58,22 @@ class TasksController < ApplicationController
         else
           array_result = array_augment.flatten.uniq
         end
-        @mass_tasks = Task.result_task(array_result,@sort_type,@direction)
+
+        @mass_tasks = Task.where(user_id: current_user.id).result_task(array_result,@sort_type,@direction)
+
       else
-        @mass_tasks = Task.all.sort_task(@sort_type,@direction)
+        @mass_tasks = Task.where(user_id: current_user.id).sort_task(@sort_type,@direction)
       end
     else
       @sort_type = "id"
       @direction = "asc"
-      @mass_tasks = Task.all
+      @mass_tasks = Task.where(user_id: current_user.id)
     end
-    @tasks = @mass_tasks.page(params[:page]).per(mass)
+    if @mass_tasks.present?
+      @tasks = @mass_tasks.page(params[:page]).per(mass)
+    else
+      @tasks = []
+    end
   end
 
   def show
@@ -81,7 +90,7 @@ class TasksController < ApplicationController
   end
 
   def create
-      @task = Task.create(task_params)
+    @task = Task.create(task_params)
     if @task.save
       flash[:success] = t('flash.tasks.created')
       redirect_to tasks_path
@@ -118,15 +127,24 @@ class TasksController < ApplicationController
 
   private
   def task_params
-    params.require(:task).permit(:id, :title, :comment, :deadline, :priority, statuses_attributes:[:task_id, :state_id])
+    params.require(:task).permit(:id, :title, :comment, :deadline, :priority, :user_id, statuses_attributes:[:task_id, :state_id])
   end
   def update_task_params
-
-    params.require(:task).permit(:id, :title, :comment, :deadline, :priority, statuses_attributes:[:id, :task_id, :state_id])
+    params.require(:task).permit(:id, :title, :comment, :deadline, :priority, :user_id, statuses_attributes:[:id, :task_id, :state_id])
   end
 
   def set_id
     @task = Task.find(params[:id])
+  end
+  def login_check
+    unless current_user.present?
+      redirect_to new_session_path
+    end
+  end
+  def user_check
+    unless Task.find(params[:id]).user_id == current_user.id
+      redirect_to tasks_path
+    end
   end
 
   def set_priority_array
