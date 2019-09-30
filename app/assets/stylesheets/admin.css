@@ -1,0 +1,64 @@
+#admin_user_list dl {
+  display: table;
+  border: 1px solid #49a0cc ;
+  color: #333333;
+  padding: 0;
+}
+#admin_user_list dt, #admin_user_list dd {
+  display: table-row;
+}
+#admin_user_list dt {
+  background: #49a0cc;
+  color: #ffffff;
+}
+#admin_user_list dd:nth-child(odd) {
+  background: #ffffff;
+}
+#admin_user_list dd:nth-child(even) {
+  background: #eeeeee;
+}
+#admin_user_list dd:hover{
+  background: #aaaaaa;
+}
+#admin_user_list dd:hover a{
+  color: #ffffff;
+}
+#admin_user_list span{
+  padding: 1rem;
+}
+.user_authority {
+  text-align: center;
+}
+.user_link:hover{
+  color: #f00!important;
+}
+.authority_admin,.authority_user{
+  padding: 0.5rem;
+}
+.authority_admin span, .authority_user span{
+  text-align: center;
+  padding: 0!important;
+}
+.authority_admin a, .authority_user a{
+  display: inline-block;
+  text-decoration: none;
+  width: 8rem;
+  padding: 0.5rem;
+  border-radius: 5px;
+  color: #ffffff;
+}
+.authority_admin a{
+  background: #de3737;
+}
+.authority_admin a:hover{
+  background: #ff6969;
+}
+.authority_user a{
+  background: #85de37;
+}
+.authority_user a:hover{
+  background: #a5f261;
+}
+.user_tasks{
+  text-align: center;
+}

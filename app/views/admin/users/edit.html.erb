@@ -1,0 +1,26 @@
+<h1><%= t('view.admins.edit') %></h1>
+<h2>ID:<%= @user.id %> <%= @user.name %></h2>
+<%= form_with(model: @user, url: admin_user_path, local: true ) do |form| %>
+<% if @user.errors.any? %>
+  <div id="error_explanation">
+    <h2><%= pluralize(@user.errors.count, "error") %> prohibited this @user from being saved:</h2>
+    <ul>
+    <% @user.errors.full_messages.each do |message| %>
+      <li><%= message %></li>
+    <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<dl>
+  <dt><%= t('view.admins.name') %></dt>
+  <dd><%= form.text_field :name, {id: "user_name"} %></dd>
+  <dt><%= t('view.admins.email') %></dt>
+  <dd><%= form.text_field :email, {id: "user_email"} %></dd>
+  <dt><%= t('view.admins.password') %></dt>
+  <dd><%= form.text_field :password, {id: "user_password"} %></dd>
+  <dt><%= t('view.admins.password_confirmation') %></dt>
+  <dd><%= form.text_field :password_confirmation, {id: "user_password_confirmation"} %></dd>
+</dl>
+<%= form.submit "送信" %>
+<% end %>

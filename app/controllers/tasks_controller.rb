@@ -3,7 +3,6 @@ class TasksController < ApplicationController
   before_action :login_check
   before_action :user_check, only:[:show, :edit, :update]
 
-
   def index
     mass = 10
     @state_list = [["進行状況",nil]]
