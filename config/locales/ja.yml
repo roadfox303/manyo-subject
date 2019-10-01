@@ -11,13 +11,10 @@ ja:
       status: 状況
       state: 状態
     attributes:
+      admin:
+        user_id: ユーザーID
       user:
         name: ユーザーネーム
-        email: メールアドレス
-        password: パスワード
-        password_confirmation: 確認用パスワード
-      admin:
-        name: 管理者ネーム
         email: メールアドレス
         password: パスワード
         password_confirmation: 確認用パスワード
@@ -53,6 +50,22 @@ ja:
       failed_create: タスクを登録できませんでした
       failed_edit: タスクを編集できませんでした
       failed_delete: タスクを削除できませんでした
+    admins:
+      none_authority: 管理者権限がありません
+      add_authority: 管理者権限を付加しました
+      remove_authority: 管理者権限を削除しました
+      augment_authority: すでに管理者として登録されています
+      created: 管理者を登録しました
+      deleted: 管理者を削除しました
+      failed_create: 管理者を登録できませんでした
+      failed_delete: 管理者を削除できませんでした
+      cant_delete: 他に管理者がいないため削除できません
+      user_created: ユーザーを作成しました
+      user_deleted: ユーザーを削除しました
+      user_edited: ユーザーを編集しました
+      failed_user_create: ユーザーを作成できませんでした
+      failed_user_delete: ユーザーを削除できませんでした
+      failed_user_edit: ユーザーを編集できませんでした
   view:
     tasks:
       title_index: タスク一覧
@@ -76,6 +89,19 @@ ja:
       email: メールアドレス
       password: パスワード
       password_confirmation: 確認用パスワード
+    admins:
+      list: ユーザー一覧
+      show: ユーザー詳細
+      edit: ユーザー編集
+      delete: 削除
+      user_id: ユーザーID
+      name: ユーザーネーム
+      email: メールアドレス
+      password: パスワード
+      password_confirmation: 確認用パスワード
+      tasks: タスク数
+      authority: 権限
+      new: ＋ ユーザー作成
   date:
     abbr_day_names:
     - 日

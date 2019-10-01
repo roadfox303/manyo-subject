@@ -36,9 +36,8 @@ $ heroku open
 ### Admins table
 |カラム名|データ型|null|index|
 |:--:|:--:|:--:|:--:|
-|**name**|string|false|
-|**email**|string|false|unique|
-|**password_digest**|string|false|
+|**user_id**|integer|false|unique|
+
 
 ### Users table
 |カラム名|データ型|null|index|

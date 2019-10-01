@@ -1,74 +1,72 @@
-<div id="index_container " class="container">
-  <h1><%= t('view.tasks.title_index') %></h1>
-  <%= flash[:success] %>
-  <%= flash[:failure] %>
-  <div id="control_box" class="row">
-    <%= form_with(url: tasks_path, local: true, method: :get) do |f| %>
-    <%= f.fields_for :search  do |i| %>
-    <ul id="search_item" class="row col-md-6">
-        <li class="col-md-4">
-      <%= i.check_box :flag, {:checked => @search_btn } , true, false %><%= i.label :"絞り込み" %>
-      <% if @search_mode == "and" %>
-        </li>
-        <li class="col-md-4">
-        <%= i.label :"and" %>
-        <%= i.radio_button :search_mode, "and", id: "and", checked: true %>
-        <%= i.label :"or" %>
-        <%= i.radio_button :search_mode, "or", id: "or" %>
-      </li>
-      <% else %>
+<h1><%= t('view.tasks.title_index') %></h1>
+<%= flash[:success] %>
+<%= flash[:failure] %>
+<div id="control_box" class="row">
+  <%= form_with(url: tasks_path, local: true, method: :get) do |f| %>
+  <%= f.fields_for :search  do |i| %>
+  <ul id="search_item" class="row col-md-6">
       <li class="col-md-4">
-        <%= i.label :"and" %>
-        <%= i.radio_button :search_mode, "and", id: "and" %>
-        <%= i.label :"or" %>
-        <%= i.radio_button :search_mode, "or", id: "or", checked: true %>
+    <%= i.check_box :flag, {:checked => @search_btn } , true, false %><%= i.label :"絞り込み" %>
+    <% if @search_mode == "and" %>
       </li>
-      <% end %>
       <li class="col-md-4">
-      <%= i.select :progress_type, @state_list, :selected => @progress_type, id:"search_progress" %>
-      <%= i.fields_for :item  do |item| %>
-        <%= item.select :priority, [["優先度", nil],["低", 1],["中", 2],["高", 3]], :selected => @priority_type, id:"search_priority" %>
-      <% end %>
-      </li>
-    </ul>
+      <%= i.label :"and" %>
+      <%= i.radio_button :search_mode, "and", id: "and", checked: true %>
+      <%= i.label :"or" %>
+      <%= i.radio_button :search_mode, "or", id: "or" %>
+    </li>
+    <% else %>
+    <li class="col-md-4">
+      <%= i.label :"and" %>
+      <%= i.radio_button :search_mode, "and", id: "and" %>
+      <%= i.label :"or" %>
+      <%= i.radio_button :search_mode, "or", id: "or", checked: true %>
+    </li>
     <% end %>
-    <div id="sort_item" class="row col-md-5">
-      <%= f.label :"ソート項目" %>
-      <%= f.select :sort_type, [["登録順", "id"],["作成日順", "created_at"],["優先度順", "priority"],["締め切り日順", "deadline"]], :selected => @sort_type, id:"sort_type" %>
-      <% if @direction == "asc" %>
-        <%= f.label :"昇順" %>
-        <%= f.radio_button :direction, "asc", id: "asc", checked: true %>
-        <%= f.label :"降順" %>
-        <%= f.radio_button :direction, "desc", id: "desc" %>
-      <% else %>
-        <%= f.label :"昇順" %>
-        <%= f.radio_button :direction, "asc", id: "asc" %>
-        <%= f.label :"降順" %>
-        <%= f.radio_button :direction, "desc", id: "desc", checked: true %>
-      <% end %>
-    </div>
-    <%= f.submit t('view.tasks.link.search'), class: "send col-md-1" %>
+    <li class="col-md-4">
+    <%= i.select :progress_type, @state_list, :selected => @progress_type, id:"search_progress" %>
+    <%= i.fields_for :item  do |item| %>
+      <%= item.select :priority, [["優先度", nil],["低", 1],["中", 2],["高", 3]], :selected => @priority_type, id:"search_priority" %>
+    <% end %>
+    </li>
+  </ul>
+  <% end %>
+  <div id="sort_item" class="row col-md-5">
+    <%= f.label :"ソート項目" %>
+    <%= f.select :sort_type, [["登録順", "id"],["作成日順", "created_at"],["優先度順", "priority"],["締め切り日順", "deadline"]], :selected => @sort_type, id:"sort_type" %>
+    <% if @direction == "asc" %>
+      <%= f.label :"昇順" %>
+      <%= f.radio_button :direction, "asc", id: "asc", checked: true %>
+      <%= f.label :"降順" %>
+      <%= f.radio_button :direction, "desc", id: "desc" %>
+    <% else %>
+      <%= f.label :"昇順" %>
+      <%= f.radio_button :direction, "asc", id: "asc" %>
+      <%= f.label :"降順" %>
+      <%= f.radio_button :direction, "desc", id: "desc", checked: true %>
     <% end %>
   </div>
-  <div id="list">
-    <ul>
-    <% if @tasks.present? %>
-      <% @tasks.each do |task| %>
-      <li>
-        <div class="task_item" id="task_<%= task.id %>">
-          <p>優先度：<span class="priority"><%= @prioritys[task.priority] %></span></P>
-          <p>進行：<span class="progress"><%= task.status_state[0].progress %></span></P>
-          <p>作成：<span class="created_at"><%= task.created_at.strftime("%Y-%m-%d %H:%M") %></span></P>
-          <p>期限：<% if task.deadline.present? %><span class="deadline"><%= task.deadline.strftime("%Y-%m-%d %H:%M") %></span><% end %></P>
-        </div>
-        <div class="title" ><%= link_to task.title, task_path(task.id) %></div>
-      </li>
-      <% end %>
-    <% end %>
-    </ul>
-  </div>
-  <%= link_to t('view.tasks.link.create'), new_task_path, id: "new_task" %>
-  <% unless @tasks.empty? %>
-    <%= paginate @tasks -%>
+  <%= f.submit t('view.tasks.link.search'), class: "send col-md-1" %>
   <% end %>
 </div>
+<div id="list">
+  <ul>
+  <% if @tasks.present? %>
+    <% @tasks.each do |task| %>
+    <li>
+      <div class="task_item" id="task_<%= task.id %>">
+        <p>優先度：<span class="priority"><%= @prioritys[task.priority] %></span></P>
+        <p>進行：<span class="progress"><%= task.status_state[0].progress %></span></P>
+        <p>作成：<span class="created_at"><%= task.created_at.strftime("%Y-%m-%d %H:%M") %></span></P>
+        <p>期限：<% if task.deadline.present? %><span class="deadline"><%= task.deadline.strftime("%Y-%m-%d %H:%M") %></span><% end %></P>
+      </div>
+      <div class="title" ><%= link_to task.title, task_path(task.id) %></div>
+    </li>
+    <% end %>
+  <% end %>
+  </ul>
+</div>
+<%= link_to t('view.tasks.link.create'), new_task_path, id: "new_task" %>
+<% unless @tasks.empty? %>
+  <%= paginate @tasks -%>
+<% end %>

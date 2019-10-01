@@ -1,8 +1,5 @@
-states = [
-  { progress:'未着手'},
-  { progress:'着手中'},
-  { progress:'完了'}
-]
-State.create! states
-users = { name: 'テストユーザー', email: 'test@gmail.com', password: 'password333'}
-User.create! users
+User.create(name: 'Admin', email: 'admin@gmail.com', password: 'superadmin')
+Admin.find_or_create_by!(user_id: 1)
+State.find_or_create_by!(progress: '未着手')
+State.find_or_create_by!(progress: '着手中')
+State.find_or_create_by!(progress: '完了')

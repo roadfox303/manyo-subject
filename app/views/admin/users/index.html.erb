@@ -1,0 +1,38 @@
+
+<h1><%= t('view.admins.list') %></h1>
+<div id="admin_user_list">
+  <%= link_to t('view.admins.new'), new_admin_user_path %>
+  <dl class="container">
+    <dt class="raw">
+      <div class="raw col-sm-10 col-md-10">
+        <span class="user_id col-sm-2 col-md-2"><%= t('view.admins.user_id') %></span>
+        <span class="user_name col-sm-4 col-md-4"><%= t('view.admins.name') %></span>
+        <span class="user_address col-sm-4 col-md-4"><%= t('view.admins.address') %></span>
+        <span class="user_tasks col-sm-2 col-md-2"><%= t('view.admins.tasks') %></span>
+      </div>
+      <div class="raw col-sm-2 col-md-2">
+        <span class="user_authority col-sm-12 col-md-12"><%= t('view.admins.authority') %></span>
+      </div>
+    </dt>
+    <% @users.each do |user| %>
+    <dd class="raw">
+      <a href="<%= admin_user_path(user.id) %>" class="user_link raw col-sm-10 col-md-10">
+        <span class="user_id col-sm-2 col-md-2"><%= user.id %></span>
+        <span class="user_name col-sm-4 col-md-4"><%= user.name %></span>
+        <span class="user_address col-sm-4 col-md-4"><%= user.email %></span>
+        <span class="user_tasks col-sm-2 col-md-2"><%= user.tasks.size %></span>
+      </a>
+      <% if @admins.include?(user.id) %>
+      <div href="#" class="authority_admin raw col-sm-2 col-md-2">
+        <span class="col-sm-12 col-md-12"><%= link_to "admin", remove_admin_users_path(user_id: user.id), method: :delete %></span>
+      </div>
+      <% else %>
+      <div href="#" class="authority_user raw col-sm-2 col-md-2">
+        <span class="col-sm-12 col-md-12"><%= link_to "user", add_admin_users_path(user_id: user.id), method: :post %></span>
+      </div>
+      <% end %>
+    </dd>
+    <% end %>
+  </dl>
+</div>
+<%= paginate @users %>
