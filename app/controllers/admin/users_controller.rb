@@ -85,10 +85,7 @@ class Admin::UsersController < ApplicationController
   end
 
   def authority_check
-    unless current_admin
-      flash[:failure] = t('flash.admins.none_authority')
-      redirect_to user_path(current_user.id)
-    end
+    raise Forbidden unless current_admin.present?
   end
 
   def set_user

@@ -53,7 +53,6 @@ RSpec.feature "admin機能", type: :feature do
     all('.user_link').last.click
     click_link "削除"
     visit admin_users_path
-    save_and_open_page
     expect(all('.user_link').size).to be 1
   end
 
