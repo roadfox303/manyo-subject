@@ -1,0 +1,22 @@
+<h1>ラベル機能</h1>
+<div id="admin_tags"  class="container">
+  <%= form_with(model: @tag, url: admin_tags_path, local: true, html:{name:"tag_new"}) do |f| %>
+  <%= f.text_field :name %>
+  <a href='#' onclick="document.tag_new.submit();" >作成</a>
+  <% end %>
+  <ul>
+  <% unless @tags.empty?%>
+    <% @tags.each do |tag| %>
+    <li class="tag">
+      <%= form_with(model: tag, url: admin_tag_path(tag.id), local: true, html:{name:"tag_#{tag.id}"}) do |t| %>
+      <div><%= t.text_field :name %></div>
+      <div class="raw">
+      <a href='#' onclick="<%= "document.tag_#{tag.id}.submit();" %>" class="col-sm-6 col-md-6">更新</a>
+      <%= link_to "削除", admin_tag_path(tag.id), method: :delete , class: "col-sm-6 col-md-6"%>
+      </div>
+      <% end %>
+    </li>
+    <% end %>
+  <% end %>
+  </ul>
+</div>

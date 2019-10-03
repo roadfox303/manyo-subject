@@ -1,3 +1,4 @@
+/* ユーザー管理機能 */
 #admin_user_list dl {
   display: table;
   border: 1px solid #49a0cc ;
@@ -61,4 +62,21 @@
 }
 .user_tasks{
   text-align: center;
+}
+
+/* ラベル機能 */
+#admin_tags ul{
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+}
+#admin_tags ul li{
+  display: inline-flex;
+  background: #fff;
+  padding: 1rem;
+  margin: 1rem;
+}
+#admin_tags .tag a{
+  text-align: center;
+  padding: 10px 0 0;
 }
