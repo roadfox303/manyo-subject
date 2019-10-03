@@ -6,9 +6,11 @@ class Task < ApplicationRecord
   has_many :status_state, through: :statuses, source: :state
   accepts_nested_attributes_for :statuses, allow_destroy: true
 
+  # has_many :labels, dependent: :destroy
+  # has_many :label_tag, through: :labels, source: :tag
+  # accepts_nested_attributes_for :labels, allow_destroy: true
   has_many :labels, dependent: :destroy
-  has_many :label_tag, through: :labels, source: :tag
-  accepts_nested_attributes_for :labels, allow_destroy: true
+  has_many :tags, through: :labels
 
   belongs_to :user
 
