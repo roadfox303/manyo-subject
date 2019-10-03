@@ -3,10 +3,13 @@ class Task < ApplicationRecord
   validates :comment, presence: true
   validates :priority, presence: true
   has_many :statuses, dependent: :destroy
-  # has_many :state, :through => :statuses
   has_many :status_state, through: :statuses, source: :state
   accepts_nested_attributes_for :statuses, allow_destroy: true
-  # accepts_nested_attributes_for :labels, allow_destroy: true
+
+  has_many :labels, dependent: :destroy
+  has_many :label_tag, through: :labels, source: :tag
+  accepts_nested_attributes_for :labels, allow_destroy: true
+
   belongs_to :user
 
   # deletedカラムがfalseであるものを取得する
