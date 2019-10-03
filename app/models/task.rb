@@ -11,6 +11,7 @@ class Task < ApplicationRecord
   # accepts_nested_attributes_for :labels, allow_destroy: true
   has_many :labels, dependent: :destroy
   has_many :tags, through: :labels
+  has_many :label_tag, through: :labels, source: :tag
 
   belongs_to :user
 

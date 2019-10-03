@@ -29,6 +29,11 @@ class TasksController < ApplicationController
           array_augment << array_progress
           @progress_type = progress_id
         end
+        if params[:search][:tag].present?
+          array_labels = Label.where(tag_id: params[:search][:tag]).pluck(:task_id)
+          array_augment << array_labels
+          @tag_type = params[:search][:tag]
+        end
         params[:search][:item].each do |key,value|
           if value.present?
             array_item = []
@@ -71,7 +76,9 @@ class TasksController < ApplicationController
       @mass_tasks = Task.where(user_id: current_user.id)
     end
     if @mass_tasks.present?
-      @tasks = @mass_tasks.page(params[:page]).per(mass)
+      # @tasks = @mass_tasks.page(params[:page]).per(mass)
+      @tasks = @mass_tasks.includes(:label_tag).page(params[:page]).per(mass)
+
     else
       @tasks = []
     end
