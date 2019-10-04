@@ -76,8 +76,7 @@ class TasksController < ApplicationController
       @mass_tasks = Task.where(user_id: current_user.id)
     end
     if @mass_tasks.present?
-      # @tasks = @mass_tasks.page(params[:page]).per(mass)
-      @tasks = @mass_tasks.includes(:label_tag).page(params[:page]).per(mass)
+      @tasks = @mass_tasks.includes(:label_tag, :status_state).page(params[:page]).per(mass)
 
     else
       @tasks = []

@@ -30,7 +30,7 @@
       <% labels = @task.tag_ids %>
       <h3><%= t('view.tasks.tag') %></h3>
       <% Tag.all.each do |tag| %>
-      <%= form.check_box :tag_ids,{ multiple: true, include_hidden: false }, tag[:id]%>
+      <%= form.check_box :tag_ids,{ multiple: true, include_hidden: false }, tag[:id], class:"label"%>
       <label><%= tag.name %></label>
       <% end %>
   </li>
