@@ -99,6 +99,7 @@ class TasksController < ApplicationController
       flash[:success] = t('flash.tasks.created')
       redirect_to tasks_path
     else
+      @state_list = set_state_array
       flash[:failure] = t('flash.tasks.failed_create')
       render :new
     end
@@ -115,6 +116,7 @@ class TasksController < ApplicationController
       flash[:success] = t('flash.tasks.edited')
       redirect_to tasks_path
     else
+      @state_list = set_state_array
       flash[:failure] = t('flash.tasks.failed_edit')
       render :new
     end
