@@ -12,7 +12,7 @@ RSpec.feature "タスク管理", type: :feature do
     FactoryBot.create(:tag_2)
     FactoryBot.create(:tag_3)
     Task.create(title: "テスト",deadline:"2019/09/28 01:30", comment: "成功", tag_ids:[Tag.first.id,Tag.last.id])
-    # FactoryBot.create(:task, title: "アソシエーション作成用", comment: "テストタスク", created_at: "#{Time.current - 2.days}", deadline: "#{Time.current + 6.days}")
+
   end
 
   def log_in(user)
