@@ -26,6 +26,14 @@
       <h3><%= t('view.tasks.priority') %></h3>
       <%= form.select :priority, Task.priority_ids.keys.to_a, {} %>
   </li>
+  <li>
+      <% labels = @task.tag_ids %>
+      <h3><%= t('view.tasks.tag') %></h3>
+      <% Tag.all.each do |tag| %>
+      <%= form.check_box :tag_ids,{ multiple: true, include_hidden: false }, tag[:id], class:"label"%>
+      <label><%= tag.name %></label>
+      <% end %>
+  </li>
   <%= form.fields_for :statuses  do |i| %>
   <%= form.hidden_field :user_id, :value => current_user.id %>
   <li>

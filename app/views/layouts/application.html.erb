@@ -22,7 +22,7 @@
                 <% if logged_in? %>
                   <li><%= link_to "tasks", tasks_path %></li>
                   <% if admin? %>
-                    <li><%= link_to "administrate", admin_users_path %></li>
+                    <li><%= link_to "administrate", admin_index_path %></li>
                   <% end %>
                   <li><a href="<%= user_path(current_user.id) %>"><%= current_user.name %></a></li>
                   <li><%= link_to "Logout", session_path(current_user.id), method: :delete %></li>

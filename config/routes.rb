@@ -7,7 +7,9 @@ Rails.application.routes.draw do
         delete :remove
       end
     end
+    resources :tags, only: [:index, :create, :destroy, :update]
   end
+  resources :admin, only: [:index]
   # resources :admin, only: [:new, :create, :destroy]
   resources :tasks do
     collection do

@@ -8,7 +8,11 @@ RSpec.feature "タスク管理", type: :feature do
     FactoryBot.create(:state)
     FactoryBot.create(:state_2)
     FactoryBot.create(:state_3)
-    FactoryBot.create(:task, title: "アソシエーション作成用", comment: "テストタスク", created_at: "#{Time.current - 2.days}", deadline: "#{Time.current + 6.days}")
+    FactoryBot.create(:tag)
+    FactoryBot.create(:tag_2)
+    FactoryBot.create(:tag_3)
+    Task.create(title: "テスト",deadline:"2019/09/28 01:30", comment: "成功", tag_ids:[Tag.first.id,Tag.last.id])
+    # FactoryBot.create(:task, title: "アソシエーション作成用", comment: "テストタスク", created_at: "#{Time.current - 2.days}", deadline: "#{Time.current + 6.days}")
   end
 
   def log_in(user)
@@ -48,6 +52,7 @@ RSpec.feature "タスク管理", type: :feature do
   def create_task(tasks)
     progress = ["未着手","着手中","完了"]
     priority = ["低","中","高"]
+    label = [ Tag.first.id, Tag.last.id]
     visit tasks_path
     tasks.times{|num|
       click_link "新規作成"
@@ -56,6 +61,7 @@ RSpec.feature "タスク管理", type: :feature do
       fill_in "form_comment", with: "テストコメント#{num}"
       select priority[rand(0..2)], from: "task[priority]"
       select progress[rand(0..2)], from: "task[statuses_attributes][0][state_id]"
+      check "task_tag_ids_#{label[rand(0..1)]}"
       click_button "登録"
       visit tasks_path
     }
@@ -101,23 +107,24 @@ RSpec.feature "タスク管理", type: :feature do
 
   scenario "タイトルが空ならバリデーションを通らない" do
     create_task(5)
-    task = Task.new(title: "",deadline:"2019/09/20 01:30", comment: "失敗")
+    task = Task.create(title: "",deadline:"2019/09/20 01:30", comment: "失敗")
     record_id
     expect(task).not_to be_valid
   end
 
   scenario "コメントが空ならバリデーションを通らない" do
     create_task(5)
-    task = Task.new(title: "コメントなし",deadline:"2019/09/26 01:30", comment: "")
+    task = Task.create(title: "コメントなし",deadline:"2019/09/26 01:30", comment: "")
     record_id
     expect(task).not_to be_valid
   end
 
   scenario "タイトル、コメントが記入されている" do
     create_task(5)
-    task = Task.new(title: "テスト",deadline:"2019/09/28 01:30", comment: "成功")
+    task = Task.create(user: @user ,title: "テスト",deadline:"2019/09/28 01:30", comment: "成功")
     record_id
-    expect(task).to be_valid
+    last = Task.last
+    expect(last.comment).to be  == "成功"
   end
 
   scenario "タスクが終了期日の降順に並んでいる" do
@@ -162,6 +169,22 @@ RSpec.feature "タスク管理", type: :feature do
     visit tasks_path
     record_id
     expect(all('.task_item').size).to be 1
+  end
+
+  scenario "タスク作成時にタグを登録できる" do
+    task = Task.create(user: @user ,title: "テスト",deadline:"2019/09/28 01:30", comment: "成功", tag_ids:[37,38])
+    record_id
+    last = Task.last
+    expect(last.tags.size).to be  == 2
+  end
+
+  scenario "特定のラベルで検索できる" do
+    create_task(5)
+    visit tasks_path
+    set_form(type:"check", item:"_search_flag")
+    set_form(type:"select", item:"_search_tag", text: "猫")
+    click_button "検索"
+    expect(all('.task_item').size).to be < 5
   end
 
 end

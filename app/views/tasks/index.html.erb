@@ -24,6 +24,7 @@
     </li>
     <% end %>
     <li class="col-md-4">
+    <%= i.select :tag, @tag_list, :selected => @tag_type, id:"search_tag" %>
     <%= i.select :progress_type, @state_list, :selected => @progress_type, id:"search_progress" %>
     <%= i.fields_for :item  do |item| %>
       <%= item.select :priority, [["優先度", nil],["低", 1],["中", 2],["高", 3]], :selected => @priority_type, id:"search_priority" %>
@@ -59,6 +60,9 @@
         <p>進行：<span class="progress"><%= task.status_state[0].progress %></span></P>
         <p>作成：<span class="created_at"><%= task.created_at.strftime("%Y-%m-%d %H:%M") %></span></P>
         <p>期限：<% if task.deadline.present? %><span class="deadline"><%= task.deadline.strftime("%Y-%m-%d %H:%M") %></span><% end %></P>
+        <% task.label_tag.each do |tag| %>
+        <p style="background:#49a0cc;color:#fff;"><span class="tag"><%= tag.name %></span></P>
+        <% end %>
       </div>
       <div class="title" ><%= link_to task.title, task_path(task.id) %></div>
     </li>

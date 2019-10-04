@@ -5,10 +5,12 @@ class TasksController < ApplicationController
 
   def index
     mass = 10
-    @state_list = [["進行状況",nil]]
-    State.all.each do |s|
-      @state_list << [s.progress,s.id]
-    end
+    # @state_list = [["進行状況",nil]]
+    # State.all.each do |s|
+    #   @state_list << [s.progress,s.id]
+    # end
+    @state_list = set_state_array.unshift(["進行状況",nil])
+    @tag_list = set_tag_array.unshift(["ラベル",nil])
     set_priority_array
     if params[:direction].present?
       @sort_type = params[:sort_type]
@@ -26,6 +28,11 @@ class TasksController < ApplicationController
           end
           array_augment << array_progress
           @progress_type = progress_id
+        end
+        if params[:search][:tag].present?
+          array_labels = Label.where(tag_id: params[:search][:tag]).pluck(:task_id)
+          array_augment << array_labels
+          @tag_type = params[:search][:tag]
         end
         params[:search][:item].each do |key,value|
           if value.present?
@@ -69,7 +76,8 @@ class TasksController < ApplicationController
       @mass_tasks = Task.where(user_id: current_user.id)
     end
     if @mass_tasks.present?
-      @tasks = @mass_tasks.page(params[:page]).per(mass)
+      @tasks = @mass_tasks.includes(:label_tag, :status_state).page(params[:page]).per(mass)
+
     else
       @tasks = []
     end
@@ -80,10 +88,7 @@ class TasksController < ApplicationController
   end
 
   def new
-    @state_list = []
-    State.all.each do |s|
-      @state_list << [s.progress,s.id]
-    end
+    @state_list = set_state_array
     @task = Task.new
     @task.statuses.build
   end
@@ -101,10 +106,7 @@ class TasksController < ApplicationController
 
   def edit
     @state = @task.status_state[0]
-    @state_list = []
-    State.all.each do |s|
-      @state_list << [s.progress,s.id]
-    end
+    @state_list = set_state_array
   end
 
   def update
@@ -126,24 +128,35 @@ class TasksController < ApplicationController
 
   private
   def task_params
-    params.require(:task).permit(:id, :title, :comment, :deadline, :priority, :user_id, statuses_attributes:[:task_id, :state_id])
+    params.require(:task).permit(:id, :title, :comment, :deadline, :priority, :user_id, tag_ids:[], statuses_attributes:[:task_id, :state_id])
   end
+
   def update_task_params
-    params.require(:task).permit(:id, :title, :comment, :deadline, :priority, :user_id, statuses_attributes:[:id, :task_id, :state_id])
+    params.require(:task).permit(:id, :title, :comment, :deadline, :priority, :user_id, tag_ids:[], statuses_attributes:[:id, :task_id, :state_id])
   end
 
   def set_id
     @task = Task.find(params[:id])
   end
+
   def login_check
     unless current_user.present?
       redirect_to new_session_path
     end
   end
+
   def user_check
     unless Task.find(params[:id]).user_id == current_user.id
       redirect_to tasks_path
     end
+  end
+
+  def set_state_array
+    State.pluck(:progress,:id)
+  end
+
+  def set_tag_array
+    Tag.pluck(:name,:id)
   end
 
   def set_priority_array
